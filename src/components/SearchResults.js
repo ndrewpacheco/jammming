@@ -2,7 +2,7 @@ import React from "react";
 import Track from "./Track";
 import SaveToPlaylistButton from "./SaveToPlaylistButton";
 
-export default function SearchResults({ submittedSong, tracks }) {
+export default function SearchResults({ submittedSong, tracks, playlists, setPlaylists }) {
   let searchResults;
 
   tracks = tracks.filter((track) => track.name === submittedSong);
@@ -15,7 +15,7 @@ export default function SearchResults({ submittedSong, tracks }) {
           return (
             <li key={track.id}>
               <Track track={track} />
-              <SaveToPlaylistButton trackId={track.id} />
+              <SaveToPlaylistButton trackName={track.name} trackId={track.id} playlists={playlists} setPlaylists={setPlaylists} />
             </li>
           );
         })}

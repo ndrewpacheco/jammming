@@ -1,54 +1,44 @@
-import React, { useState } from "react";
-import Track from "./Track";
+import React from "react";
 
-function Playlist({ playlistState }) {
-  const {playlistName, setPlaylistName, playlistTracks, setPlaylistTracks, toggleNameEdit, setToggleNameEdit} =
-    playlistState;
+function Playlist({ name, tracks, id, setPlaylists }) {
 
-  let nameChange;
-  const nameChangeHandler = (e) => {
-    nameChange = e.target.value;
-  };
+  const clickRemoveHandler = (event) => {
+    event.preventDefault()
+    setPlaylists(prevPlaylists => {
+      console.log(prevPlaylists)
+     return prevPlaylists.map(prevPlaylist => {
+        if (id !== prevPlaylist.id) {
+         return prevPlaylist
+        } else {
+          prevPlaylist.tracks = prevPlaylist.tracks.filter(track => track.id.toString() !== event.target.id)
+          return prevPlaylist
+        }
+      })
+    })
+   }
 
-  const submitHandler = (e) => {
-    e.preventDefault();
-    setPlaylistName(nameChange);
-    setToggleNameEdit(false);
-  };
-  const showEditName = (
-    <form
-      action=""
-      onSubmit={submitHandler}>
-      <input
-        type="text"
-        name="playlist-name"
-        id=""
-        onChange={nameChangeHandler}
-      />
-      <button type="submit">Change Playlist Name</button>
-    </form>
-  );
+   const renameHandler = (event) => {
+
+    }
+
+    // const clickRemoveHandler = (event) => {
+    // event.preventDefault()
+    // console.log(typeof event.target.id)
+    // }
   return (
-    <>
-      <h2>
-        {playlistName}
-        <span
-          style={{ cursor: "pointer" }}
-          onClick={() => setToggleNameEdit((prev) => !prev)}>
-          {toggleNameEdit ? " - " : " + "}{" "}
-        </span>
-      </h2>
-      {toggleNameEdit && showEditName}
-      <ul>
-        {playlistTracks.map((track) => {
-          return (
-            <li key={track.id}>
-              <Track track={track} />
-            </li>
-          );
-        })}
-      </ul>
-    </>
+    <li>
+      <div><h3 style={{display: "inline-block"}}>{name}</h3> <span style={{cursor: "pointer"}} onClick={renameHandler}>Rename Playlist</span></div>
+
+      {tracks.map((track) => {
+
+        return (
+          <div>
+
+            <div>{track.name} <span id={track.id} onClick={clickRemoveHandler} style={{cursor: "pointer"}}> X </span></div>
+          </div>
+        );
+      })}
+    </li>
   );
 }
 
